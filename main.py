@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import openai  # OpenAIライブラリをインポート
+from openai import OpenAI
 from constant import TOKEN, OPENAI_API_KEY  # OPENAI_API_KEYもconstant.pyからインポート
 
 extensions = (
@@ -31,7 +31,7 @@ class MyBot(commands.Bot):
             messages.append({"role": "user", "content": content.split('>')[1].lstrip()})
 
             # OpenAIのAPIキーを設定
-            client = openai(
+            client = OpenAI(
                 # This is the default and can be omitted
                 api_key=OPENAI_API_KEY,
             )
