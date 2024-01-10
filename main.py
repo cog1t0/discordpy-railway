@@ -12,8 +12,6 @@ class MyBot(commands.Bot):
             command_prefix=commands.when_mentioned,
             intents=discord.Intents.all(),
         )
-        # OpenAIのAPIキーを設定
-        openai.api_key = OPENAI_API_KEY
 
     async def setup_hook(self):
         for extension in extensions:
@@ -31,13 +29,19 @@ class MyBot(commands.Bot):
         if self.user.mentioned_in(message):  # Botへのメンションが含まれている場合
             content = message.content.replace(f'<@!{self.user.id}>', '')  # メンションを削除
             messages.append({"role": "user", "content": content.split('>')[1].lstrip()})
+
+            # OpenAIのAPIキーを設定
+            client = openai(
+                # This is the default and can be omitted
+                api_key=OPENAI_API_KEY,
+            )
             # OpenAI APIを呼び出して応答を生成
-            completion = openai.ChatCompletion.create(
+            chat_completion = client.chat.completions.create(
+                messages=messages,
                 model="gpt-3.5-turbo",
-                messages=messages
             )
 
-            await message.channel.send(completion.choices[0].message.content)  # 応答を送信
+            await message.channel.send(chat_completion.choices[0].message.content)  # 応答を送信
 
 if __name__ == '__main__':
     MyBot().run(TOKEN)
