@@ -20,9 +20,7 @@ class MyBot(commands.Bot):
     # メンションを受けた際の処理を追加
     async def on_message(self, message):
         messages = [
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": "こんにちは。あなたは誰ですか？"},
-            {"role": "assistant", "content": "私は AI アシスタントです。なにかお手伝いできることはありますか？"}
+            {"role": "system", "content": "あなたは技術的な質問に、端的にわかりやすく回答するAIアシスタントです."}
         ]
         if message.author.bot:  # ボット自体のメッセージは無視
             return
